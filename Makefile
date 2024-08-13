@@ -14,13 +14,15 @@ DARWIN_CFLAGS = $(BASE_CFLAGS)
 DARWIN_LDFLAGS = $(BASE_LDFLAGS) -lc++ -lc++abi
 
 LINUX_CFLAGS = $(BASE_CFLAGS)
-LINUX_LDFLAGS = $(BASE_LDFLAGS) -lstdc++fs
-
+LINUX_LDFLAGS = $(BASE_LDFLAGS) -lstdc++
 
 SRC_FILES = $(shell find $(SRC_DIR) -type f -name '*.cpp')
 OBJ_FILES = $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(SRC_FILES))
 
 NAME = BlockParser
+
+
+all: linux
 
 # General rule to compile any object file
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
@@ -48,4 +50,3 @@ clean:
 re: clean all
 
 .PHONY: all darwin linux clean re
-
