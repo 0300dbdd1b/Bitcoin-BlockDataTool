@@ -1,3 +1,6 @@
+#ifndef BLOCK_HPP
+#define BLOCK_HPP
+
 #include "BlockDataTool.hpp"
 
 class BlockHeader
@@ -20,3 +23,5 @@ public:
 	std::array<uint8_t, 32> blockHash;
 	std::string location;
 };
+
+#endif // BLOCK_HPP

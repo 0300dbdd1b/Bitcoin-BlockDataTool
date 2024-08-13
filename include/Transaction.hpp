@@ -1,3 +1,6 @@
+#ifndef TRANSACTION_HPP
+#define TRANSACTION_HPP
+
 #include "BlockDataTool.hpp"
 
 struct TxInput {
@@ -40,4 +43,4 @@ public:
 
 };
 
-
+#endif // TRANSACTION_HPP
