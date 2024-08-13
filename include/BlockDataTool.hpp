@@ -62,7 +62,7 @@
 #include "utils.hpp"
 #include "Transaction.hpp"
 #include "Block.hpp"
-#include "BlockParser.hpp"
+#include "BlkParser.hpp"
 
 #endif // PLATFORM_H
 

@@ -24,24 +24,4 @@ vector<string> listBlkFiles(const string &directoryPath)
     return blkFiles;
 }
 
-int main(int ac, char *av[]) 
-{
-	string blkDir;
-	if (ac != 2)
-		blkDir = "data";
-	else
-		blkDir = av[1];
 
-	// ifstream test(blkDir);
-	if (!filesystem::exists(blkDir))
-	{
-		fprintf(stderr, "\"%s\" is not a valid path !\n", blkDir.c_str());
-		return 1;
-	}
-    vector<string> files = listBlkFiles(blkDir);
-    for (const auto &file : files) {
-        cout << "Found blk file: " << file << endl;
-    }
-
-    return 0;
-}
