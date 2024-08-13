@@ -23,3 +23,10 @@ string bytesToHex(const array<uint8_t, 32>& bytes)
 	return hex;
 }
 
+uint32_t toBigEndian(uint32_t value) 
+{
+    return ((value >> 24) & 0x000000FF)| 
+           ((value >> 8) & 0x0000FF00) | 
+           ((value << 8) & 0x00FF0000) | 
+           ((value << 24) & 0xFF000000);
+}

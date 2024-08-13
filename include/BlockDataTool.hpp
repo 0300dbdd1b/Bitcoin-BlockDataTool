@@ -63,6 +63,7 @@
 #include "Transaction.hpp"
 #include "Block.hpp"
 #include "BlkParser.hpp"
+#include "BitcoinParams.hpp"
 
 #endif // PLATFORM_H
 

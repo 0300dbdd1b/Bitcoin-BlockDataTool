@@ -6,8 +6,8 @@ OBJ_DIR = obj
 BIN_DIR = bin
 
 # Base Flags
-BASE_CFLAGS = -Wall -Wextra -g -I$(INC_DIR)
-BASE_LDFLAGS = 
+BASE_CFLAGS = -Wall -Wextra -fsanitize=address -g -I$(INC_DIR)
+BASE_LDFLAGS = -fsanitize=address
 
 # Platform-Specific Flags
 DARWIN_CFLAGS = $(BASE_CFLAGS)
