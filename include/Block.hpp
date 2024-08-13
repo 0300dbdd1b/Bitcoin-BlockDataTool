@@ -1,7 +1,11 @@
 #ifndef BLOCK_HPP
 #define BLOCK_HPP
 
-#include "BlockDataTool.hpp"
+ #include <cstdint>
+ #include <array>
+ #include <vector>
+
+ #include "Transaction.hpp"
 
 class BlockHeader
 {

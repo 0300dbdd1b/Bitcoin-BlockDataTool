@@ -1,9 +1,12 @@
-#include "BlkParser.hpp"
 #include <cstdint>
 #include <filesystem>
 #include <fstream>
 #include <iterator>
 #include <vector>
+
+#include "utils.hpp"
+#include "Block.hpp"
+#include "BlkParser.hpp"
 
 using namespace std;
 
@@ -23,46 +26,42 @@ BlkParser::BlkParser(const string& directoryPath)
 	free(rawData);
 }
 
-void BlkParser::ParseBlkFile(const string &blkFilePath, uint8_t *rawData)
+ErrorCode BlkParser::ParseBlkFile(const string &blkFilePath, uint8_t *rawData)
 {
-	vector<Block> blocks;
-	filesystem::path filePath = blkFilePath;
-	if (!filesystem::exists(filePath))
-	{
-		cerr << "File does not exist : " << blkFilePath << "\n";
-		return ;
-	}
-	ifstream fileStream(filePath, ios::binary);
-	if (!fileStream.is_open())
-	{
-		cerr << "Failed to open file : " << blkFilePath << "\n";
-		return ;
-	}
 	uint32_t magic, blockSize;
+	vector<Block> blocks;
+
+	filesystem::path filePath = blkFilePath;
+
+	if (!filesystem::exists(filePath))
+		return Error("File does not exist : " + blkFilePath + "\n", ERROR);
+	
+	ifstream fileStream(filePath, ios::binary);
+	
+	if (!fileStream.is_open())
+		Error("Failed to open file : " + blkFilePath + "\n", ERROR);
+
 
 	fileStream.read(reinterpret_cast<char *>(&magic), sizeof(magic));
 	fileStream.read(reinterpret_cast<char *>(&blockSize), sizeof(blockSize));
 	magic = toBigEndian(magic);
 	
 	if (magic != MAINNET && magic != REGTEST && magic != TESTNET)
-	{
-		cerr << "Wrong Magic Number\n";
-		return ;
-	}
-	cout << "magic : " << magic << " Block Size : " << blockSize << endl;
+		return Error("Unknown Magic Number\n", ERROR);
+
+	printf("Magic : 0x%08X Block Size : %d\n", magic, blockSize);
 	fileStream.read(reinterpret_cast<char *>(rawData), sizeof(char) * blockSize);
-	cout << "TKT FRR : " << rawData << endl;
 
-	if (fileStream.eof())
-		return;
-	free(rawData);
 	fileStream.close();
+	return SUCCESS;
 }
 
-void BlkParser::ParseBlkBlock(ifstream fileStream)
+ErrorCode BlkParser::ParseBlkBlock(ifstream fileStream)
 {
+	return Error("", ERROR);
 }
 
-void BlkParser::Parse(const string &args)
+ErrorCode BlkParser::Parse(const string &args)
 {
+	return Error("", ERROR);
 }

@@ -49,21 +49,5 @@
 #ifdef PLATFORM_DARWIN
 #endif
 
-
-#include <array>
-#include <cstdint>
-#include <vector>
-#include <iostream>
-#include <string>
-#include <filesystem>
-#include <regex>
-#include <set>
-
-#include "utils.hpp"
-#include "Transaction.hpp"
-#include "Block.hpp"
-#include "BlkParser.hpp"
-#include "BitcoinParams.hpp"
-
 #endif // PLATFORM_H
 

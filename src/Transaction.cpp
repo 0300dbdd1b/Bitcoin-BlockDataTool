@@ -1,4 +1,4 @@
-#include "BlockDataTool.hpp"
+#include "Transaction.hpp"
 
 void Transaction::AddInput(const TxInput& input)
 {

@@ -1,12 +1,13 @@
 #ifndef BLOCKPARSER_HPP
 #define BLOCKPARSER_HPP
 
-#include "BlockDataTool.hpp"
 #include <cstdint>
+#include <string>
 #include <filesystem>
 #include <fstream>
 #include <ios>
 
+#include "ErrorHandler.hpp"
 
 typedef struct BlkFile
 {
@@ -19,9 +20,9 @@ class BlkParser
 {
 public:
 	BlkParser(const std::string &directoryPath);
-	void Parse(const std::string& args);
-	void ParseBlkFile(const std::string& blkFilePath, uint8_t *rawData);
-	void ParseBlkBlock(std::ifstream fileStream);
+	ErrorCode Parse(const std::string& args);
+	ErrorCode ParseBlkFile(const std::string& blkFilePath, uint8_t *rawData);
+	ErrorCode ParseBlkBlock(std::ifstream fileStream);
 
 };
 

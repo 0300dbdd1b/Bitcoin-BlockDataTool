@@ -1,7 +1,9 @@
 #ifndef TRANSACTION_HPP
 #define TRANSACTION_HPP
 
-#include "BlockDataTool.hpp"
+ #include <vector>
+ #include <cstdint>
+ #include <array>
 
 struct TxInput {
     std::array<uint8_t, 32> prevTxHash;

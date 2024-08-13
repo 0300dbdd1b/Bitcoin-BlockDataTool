@@ -6,8 +6,8 @@ OBJ_DIR = obj
 BIN_DIR = bin
 
 # Base Flags
-BASE_CFLAGS = -Wall -Wextra -fsanitize=address -g -I$(INC_DIR)
-BASE_LDFLAGS = -fsanitize=address
+BASE_CFLAGS = -Wall -Wextra -g -I$(INC_DIR)
+BASE_LDFLAGS =
 
 # Platform-Specific Flags
 DARWIN_CFLAGS = $(BASE_CFLAGS)
@@ -22,7 +22,7 @@ OBJ_FILES = $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(SRC_FILES))
 NAME = BlockParser
 
 
-all: linux
+all: darwin
 
 # General rule to compile any object file
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
