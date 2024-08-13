@@ -1,3 +1,4 @@
+#include <cstddef>
 #include <string>
 #include <vector>
 
@@ -20,7 +21,7 @@ int main(int ac, char *av[])
 		return 1;
 	}
 	BlkParser parser(blkDir);
-
+	parser.Parse("");
 	return 0;
     vector<string> files = listBlkFiles(blkDir);
     for (const auto &file : files) {

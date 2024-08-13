@@ -4,6 +4,7 @@
 #include <iterator>
 #include <vector>
 
+#include "ErrorHandler.hpp"
 #include "utils.hpp"
 #include "Block.hpp"
 #include "BlkParser.hpp"
@@ -12,25 +13,12 @@ using namespace std;
 
 BlkParser::BlkParser(const string& directoryPath)
 {
-	uint8_t *rawData = (uint8_t *)malloc(sizeof(uint8_t) * LIMITS_MAX_BLOCK_SIZE);
-	int i = 0;
-	vector<string> blkFiles = listBlkFiles(directoryPath);
-	
-	
-	for (const auto &file : blkFiles)
-	{
-		ParseBlkFile(file, rawData);
-		i++;
-	}
-	cout << "IIIIIII : " << i << "\n";
-	free(rawData);
+	this->blkFiles = listBlkFiles(directoryPath);
 }
 
 ErrorCode BlkParser::ParseBlkFile(const string &blkFilePath, uint8_t *rawData)
 {
-	uint32_t magic, blockSize;
 	vector<Block> blocks;
-
 	filesystem::path filePath = blkFilePath;
 
 	if (!filesystem::exists(filePath))
@@ -41,27 +29,49 @@ ErrorCode BlkParser::ParseBlkFile(const string &blkFilePath, uint8_t *rawData)
 	if (!fileStream.is_open())
 		Error("Failed to open file : " + blkFilePath + "\n", ERROR);
 
+	while (!fileStream.eof())
+	{
+		Block block;
+		uint32_t magic;
+		uint32_t blockSize;
 
-	fileStream.read(reinterpret_cast<char *>(&magic), sizeof(magic));
-	fileStream.read(reinterpret_cast<char *>(&blockSize), sizeof(blockSize));
-	magic = toBigEndian(magic);
-	
-	if (magic != MAINNET && magic != REGTEST && magic != TESTNET)
-		return Error("Unknown Magic Number\n", ERROR);
-
-	printf("Magic : 0x%08X Block Size : %d\n", magic, blockSize);
-	fileStream.read(reinterpret_cast<char *>(rawData), sizeof(char) * blockSize);
-
+		fileStream.read(reinterpret_cast<char *>(&magic), sizeof(magic));
+		if (fileStream.eof())
+			break;
+		magic = toBigEndian(magic);
+		if (magic != MAINNET && magic != REGTEST && magic != TESTNET)
+			return Error("Unknown Magic Number\n", ERROR);
+		
+		fileStream.read(reinterpret_cast<char *>(&blockSize), sizeof(blockSize));
+		printf("Magic : 0x%08X Block Size : %d\n", magic, blockSize);
+		if (blockSize > LIMITS_MAX_BLOCK_SIZE)
+			return Error("Block Size > MAX_BLOCK_SIZE", ERROR);
+		fileStream.read(reinterpret_cast<char *>(rawData), sizeof(char) * blockSize);
+		if (ParseBlock(rawData) != SUCCESS)
+			return Error("Unable to parse  block\n", ERROR);
+		memset(rawData, 0, sizeof(uint8_t) * LIMITS_MAX_BLOCK_SIZE);
+	}
 	fileStream.close();
 	return SUCCESS;
 }
 
-ErrorCode BlkParser::ParseBlkBlock(ifstream fileStream)
+ErrorCode BlkParser::ParseBlock(const uint8_t *rawData)
 {
+	Block block;
+
+
 	return Error("", ERROR);
 }
 
 ErrorCode BlkParser::Parse(const string &args)
 {
-	return Error("", ERROR);
+	uint8_t *rawData = (uint8_t *)malloc(sizeof(uint8_t) * LIMITS_MAX_BLOCK_SIZE);
+	
+	for (const auto &file : this->blkFiles)
+	{
+		if (ParseBlkFile(file, rawData) != SUCCESS)
+			return Error("Failed to parse " + file + "\n", ERROR);
+	}
+	free(rawData);
+	return SUCCESS;
 }
