@@ -4,6 +4,7 @@
  #include <cstdint>
  #include <array>
  #include <vector>
+ #include <string>
 
  #include "Transaction.hpp"
 
@@ -16,6 +17,8 @@ public:
     uint32_t timestamp;
     uint32_t bits;
     uint32_t nonce;
+
+	void print(void);
 };
 
 
@@ -26,6 +29,11 @@ public:
 	std::vector<Transaction> transactions;
 	std::array<uint8_t, 32> blockHash;
 	std::string location;
+	
 };
+
+
+
+
 
 #endif // BLOCK_HPP

@@ -20,7 +20,9 @@ enum  MagicByte
 std::string bytesToHex(const std::vector<uint8_t>& bytes);
 std::string bytesToHex(const std::array<uint8_t, 32>& bytes);
 std::vector<std::string> listBlkFiles(const std::string &directoryPath);
+uint32_t readLittleEndian(const std::vector<uint8_t>& data, size_t start);
 uint32_t toBigEndian(uint32_t value);
+uint64_t decodeCompactSize(const std::vector<uint8_t>& data, size_t& bytesConsumed);
 
 
 #endif // UTILS_HPP

@@ -25,8 +25,9 @@ public:
 	std::vector<Block> blocks;
 	BlkParser(const std::string &directoryPath);
 	ErrorCode Parse(const std::string& args);
-	ErrorCode ParseBlkFile(const std::string& blkFilePath, uint8_t *rawData);
-	ErrorCode ParseBlock(const uint8_t *rawData);
+	ErrorCode ParseBlkFile(const std::string& blkFilePath, std::vector<uint8_t> &rawData);
+	ErrorCode ParseBlock(const std::vector<uint8_t> &rawData);
+	BlockHeader ParseBlockHeader(const std::vector<uint8_t> &rawData);
 
 };
 

@@ -22,7 +22,7 @@ OBJ_FILES = $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(SRC_FILES))
 NAME = BlockParser
 
 
-all: darwin
+all: linux
 
 # General rule to compile any object file
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
