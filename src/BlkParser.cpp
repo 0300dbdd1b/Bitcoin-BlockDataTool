@@ -8,6 +8,7 @@
 #include <cstring>
 
 #include "ErrorHandler.hpp"
+#include "Transaction.hpp"
 #include "utils.hpp"
 #include "Block.hpp"
 #include "BlkParser.hpp"
@@ -94,26 +95,36 @@ ErrorCode BlkParser::ParseBlock(const vector<uint8_t> &rawData)
 	size_t pos = 0;
 
 
-	uint64_t size = decodeCompactSize(rawData, pos);
+	block.blockHeader = ParseBlockHeader(rawData);
+	pos+= 80;
+	uint64_t transactionCount = decodeCompactSize(rawData, pos);
+	printf("transactionCount : %llu \n",  transactionCount);
 
-	printf("SIZE : %d \n",  size);
-	while (size > 0)
+	while (transactionCount > 0)
 	{
-		uint32_t version = readLittleEndian(rawData, 0);
-		uint8_t marker = rawData[4];
-		uint8_t flag = rawData[5];
-		pos += sizeof(version) + sizeof(marker) + sizeof(flag);
+		Transaction transaction;
+		transaction.version = readLittleEndian(rawData, pos);
+		transaction.marker = rawData[4];
+		transaction.flag = rawData[5];
+		pos += sizeof(transaction.version) + sizeof(transaction.marker) + sizeof(transaction.flag);
+
 		
-		block.blockHeader = ParseBlockHeader(rawData);
-		pos += 80;
-
-
 		uint32_t inputCount = decodeCompactSize(rawData, pos);
-		printf("%ld INPUTS\n", inputCount);
 		
-		size--;
+		transaction.inputCount = inputCount;
+
+		printf("%u INPUTS\n", inputCount);
+		while (inputCount > 0)
+		{
+			TxInput input;
+			inputCount--;
+		}
+		transaction.print();
+		block.transactions.push_back(transaction);
+		transactionCount--;
 		return ERROR;
 	}
+	return SUCCESS;
 }
 
 ErrorCode BlkParser::Parse(const string &args)

@@ -19,14 +19,12 @@ struct TxOutput {
 
 class Transaction
 {
-	Transaction(uint32_t version, uint32_t lockTime)
-        : version(version), lockTime(lockTime) {}
-	
+public:
 	void AddInput(const TxInput& input);
 	void AddOutput(const TxOutput& output);
 	uint64_t GetFees();
+	void print();
 
-public:
 	uint32_t version;
 	uint32_t marker;
 	uint32_t flag;
